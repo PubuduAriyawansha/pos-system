@@ -8,9 +8,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.dep11.pos.tm.Customer;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,8 +24,17 @@ public class ManageCustomerFormController {
     public JFXTextField txtCustomerAddress;
     public JFXButton btnSave;
     public JFXButton btnDelete;
-    public TableView tblCustomers;
+    public TableView <Customer>tblCustomers;
+    public JFXButton btnNew;
 
+    public void initialize(){
+        tblCustomers.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
+        tblCustomers.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("name"));
+        tblCustomers.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("address"));
+        txtCustomerId.setEditable(false);
+        btnDelete.setDisable(true);
+        btnNew.fire();
+    }
     public void navigateToHome(MouseEvent mouseEvent) throws IOException {
         URL resource = this.getClass().getResource("/view/MainForm.fxml");
         Parent root = FXMLLoader.load(resource);
@@ -38,6 +49,21 @@ public class ManageCustomerFormController {
     }
 
     public void btnSave_OnAction(ActionEvent actionEvent) {
+    }
+    private boolean isDataValid(){
+        String name = txtCustomerName.getText().strip();
+        String address = txtCustomerAddress.getText().strip();
+
+        if(!name.matches("[A-Za-z ]{2,}")){
+            txtCustomerName.requestFocus();
+            txtCustomerName.selectAll();
+            return false;
+        } else if (address.length() < 3) {
+            txtCustomerAddress.requestFocus();
+            txtCustomerAddress.selectAll();
+            return false;
+        }
+        return true;
     }
 
     public void btnDelete_OnAction(ActionEvent actionEvent) {
