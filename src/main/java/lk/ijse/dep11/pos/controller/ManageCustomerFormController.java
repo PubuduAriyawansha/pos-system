@@ -132,7 +132,7 @@ public class ManageCustomerFormController {
     public void btnDelete_OnAction(ActionEvent actionEvent) {
 
         try {
-            if(OrderDataAccess.existsOrderByCustoemrId(txtCustomerId.getText())){
+            if(OrderDataAccess.existsOrderByCustomerId(txtCustomerId.getText())){
                 new Alert(Alert.AlertType.ERROR,"This customer is already associate with order").show();
             } else {
                 CustomerDataAccess.deleteCustomer(txtCustomerId.getText());
